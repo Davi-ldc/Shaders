@@ -22,7 +22,6 @@ import fragmentShader from './shaders/Fragment.glsl'
  */
 // Debug
 const gui = new dat.GUI()
-
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -40,12 +39,30 @@ const textureLoader = new THREE.TextureLoader()
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
 
+const count = geometry.attributes.position.count
+const randoms = new Float32Array(count)
+
+for (let i=1; i<count; i++){
+    randoms[i] = Math.random()
+}
+geometry.setAttribute("vRandom", new THREE.BufferAttribute(randoms, 1) )
+
 // Material
 const material = new THREE.RawShaderMaterial({
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
-    side: THREE.DoubleSide
+    side: THREE.DoubleSide,
+    uniforms: {
+        Frequency: { value: new THREE.Vector2(10,5)},
+        Time: {value:0},
+        Speed: {value:2}
+    }
 })
+gui.add(material.uniforms.Frequency.value, 'x').min(0).max(20).step(0.1)
+// gui.add(material.uniforms.Frequency.value, 'y').min(0).max(20).step(0.1)
+gui.add(material.uniforms.Speed, 'value').min(0).max(10).step(1).name('Speed')
+
+
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
@@ -103,6 +120,7 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    material.uniforms.Time.value = elapsedTime
 
     // Update controls
     controls.update()
