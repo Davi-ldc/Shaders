@@ -32,6 +32,7 @@ const scene = new THREE.Scene()
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const flagTexture = textureLoader.load('/textures/flag-french.jpg')
 
 /**
  * Test mesh
@@ -48,21 +49,34 @@ for (let i=1; i<count; i++){
 geometry.setAttribute("vRandom", new THREE.BufferAttribute(randoms, 1) )
 
 // Material
-const material = new THREE.RawShaderMaterial({
+// const material = new THREE.RawShaderMaterial({
+//     vertexShader: vertexShader,
+//     fragmentShader: fragmentShader,
+//     side: THREE.DoubleSide,
+//     uniforms: {
+//         Frequency: { value: new THREE.Vector2(10,5)},
+//         Time: {value:0},
+//         Speed: {value:2},
+//         Color: {value: new THREE.Color('orange')},
+//         Texture: {value: flagTexture}
+//     }
+// })
+// gui.add(material.uniforms.Frequency.value, 'x').min(0).max(20).step(0.1)
+// // gui.add(material.uniforms.Frequency.value, 'y').min(0).max(20).step(0.1)
+// gui.add(material.uniforms.Speed, 'value').min(0).max(10).step(1).name('Speed')
+
+const material = new THREE.ShaderMaterial({
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     side: THREE.DoubleSide,
     uniforms: {
         Frequency: { value: new THREE.Vector2(10,5)},
         Time: {value:0},
-        Speed: {value:2}
+        Speed: {value:2},
+        Color: {value: new THREE.Color('orange')},
+        Texture: {value: flagTexture}
     }
 })
-gui.add(material.uniforms.Frequency.value, 'x').min(0).max(20).step(0.1)
-// gui.add(material.uniforms.Frequency.value, 'y').min(0).max(20).step(0.1)
-gui.add(material.uniforms.Speed, 'value').min(0).max(10).step(1).name('Speed')
-
-
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
