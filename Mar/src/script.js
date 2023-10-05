@@ -11,7 +11,7 @@ THREE.ColorManagement.enabled = false
  * Base
  */
 // Debug
-const gui = new dat.GUI({ width: 1000 })
+const gui = new dat.GUI()
 const debugObject = {}
 debugObject.depthColor = '#186691'
 debugObject.surfaceColor = '#9bd8ff'
